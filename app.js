@@ -29,17 +29,23 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 const PORT = process.env.PORT || 3000;
 
-sequelize.authenticate()
-  .then(() => {
+const startServer = async () => {
+  try {
+    await sequelize.authenticate();
     logger.info('✅ Conectado a MySQL con Sequelize');
-    return sequelize.sync();
-  })
-  .then(() => {
+    await sequelize.sync();
+
     app.listen(PORT, () => {
       logger.info(`🚀 Server running on port ${PORT}`);
       logger.info(`📖 Swagger UI disponible en http://localhost:${PORT}/api-docs`);
     });
-  })
-  .catch(err => {
+  } catch (err) {
     logger.error('❌ Error al conectar con la base de datos:', err);
-  });
+  }
+};
+
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = app;
