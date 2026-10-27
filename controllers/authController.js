@@ -4,10 +4,14 @@ const logger = require('../utils/logger');
 const { Usuario, Rol, RefreshToken } = require('../models');
 require('dotenv').config();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'mi-secreto-seguro';
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET || 'mi-secreto-seguro';
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '2h';
 const REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || '7d';
+
+if (!JWT_SECRET || !JWT_REFRESH_SECRET) {
+  throw new Error('Faltan variables de entorno: JWT_SECRET y JWT_REFRESH_SECRET deben estar definidas en .env');
+}
 
 const normalizeEmail = (email) => (typeof email === 'string' ? email.trim().toLowerCase() : '');
 const isEmailValid = (email) => typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
