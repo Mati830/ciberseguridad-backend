@@ -1,186 +1,198 @@
-# Ciberseguridad-backend: CRUD con Node.js y MySQL
+# Ciberseguridad Backend
 
-## Descripción del Proyecto
+## Descripción general
 
-En este proyecto, desarrollarás una plataforma de streaming usando Node.js y MySQL. La aplicación permitirá realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre una base de datos relacional, utilizando el archivo trailerflix.json como referencia para diseñar el modelo de datos.
+Este proyecto es una API backend orientada a la ciberseguridad, diseñada para gestionar accesos, autenticación de usuarios, control de roles y seguridad de la aplicación. Su enfoque principal no es la creación de un sistema de streaming, sino la implementación de una infraestructura segura para proteger recursos, gestionar identidad y registrar actividades sensibles dentro de un entorno de software seguro.
 
-## Entrega
-Esta entrega se enfocará en diseñar y crear la base de datos para una plataforma de streaming, usando MySQL y Node.js, junto con su respectiva documentación.
+La idea central del repositorio es ofrecer una base sólida para aplicaciones que requieren:
 
-Aprovecha lo visto en las clases para comenzar a diseñar las tablas y relaciones necesarias, las cuales deberán estar basadas en las propiedades del archivo trailerflix.json.
+- autenticación segura de usuarios
+- control de permisos por roles
+- generación y renovación de tokens JWT
+- protección contra ataques comunes
+- auditoría de eventos y registros del sistema
+- documentación de endpoints con Swagger
 
-## Dataset Proporcionados
+## ¿Qué hace este proyecto?
 
-- **trailerflix.json**: Contiene información detallada sobre contenido de la plataforma, como películas y series. Deberás utilizar este archivo como base para diseñar el modelo de datos.
+El backend implementa una capa de seguridad para una aplicación web o servicio interno. Incluye mecanismos para:
 
-## Modelo de Base de Datos
-El archivo trailerflix.json incluye propiedades como ID, título, categorías, géneros, resumen, temporadas, reparto y enlaces a trailers. Basado en esta estructura, debes diseñar una base de datos llamada trailerflix con al menos 6 tablas relacionales. Entre ellas:
+- registrar usuarios con rol definido
+- iniciar sesión mediante credenciales seguras
+- autenticar peticiones con JWT
+- renovar sesiones con refresh tokens
+- restringir acceso según permisos de usuario
+- limitar intentos de login para prevenir fuerza bruta
+- proteger la API con cabeceras HTTP y medidas de seguridad básicas
+- registrar actividad y errores mediante logging
 
-- **contenido**: Tabla principal con la información de películas y series.
-- **categorías**: Definirá si el contenido es una película o una serie.
-- **géneros**: Almacenará los géneros como Ciencia Ficción, Fantasía, etc.
-- **actores**: Información sobre los actores principales de cada contenido.
-- **tabla intermedia contenido-actores**: Relacionará el contenido con los actores.
-El diseño debe ser bocetado primero en papel y luego implementado en la plataforma **DB Designer** sugerida en clase. Debes generar un archivo SQL de exportación que podrás usar para crear las tablas en MySQL.
+## Stack tecnológico
 
-## Pasos a Seguir
-1. **Diseñar el modelo de datos** basado en trailerflix.json.
-2. **Implementar las tablas** en DB Designer, asegurando que haya relaciones adecuadas entre ellas.
-3. **Generar el archivo SQL** para crear las tablas en MySQL.
-4. **Migrar los datos** del archivo JSON a MySQL utilizando los insert correspondientes.
+- Node.js
+- Express
+- MySQL
+- Sequelize
+- JWT
+- bcrypt
+- Helmet
+- express-rate-limit
+- Swagger
+- Winston
 
-## Funcionalidades del CRUD
+## Características principales
 
-1. **Obtener todos los contenidos**
-   - Endpoint que devuelve todos los contenidos de la base de datos.
-   - Control de errores para manejar la indisponibilidad de la base de datos.
+### 1. Autenticación y autorización
+- Login con email y contraseña
+- Generación de access token y refresh token
+- Validación de tokens en rutas protegidas
+- Control de acceso por roles
 
-2. **Obtener un contenido por ID**
-   - Endpoint para obtener un contenido específico.
-   - Control de errores para manejar casos en que el contenido no exista.
+### 2. Seguridad aplicada
+- Encriptación de contraseñas con bcrypt
+- Protección HTTP con Helmet
+- Limitación de velocidad para evitar abuso
+- Validación de entradas y manejo de errores
+- Logs de seguridad y errores del sistema
 
-3. **Filtrar contenidos**
-   - Endpoint para filtrar por título, género o categoría.
-   - Control de errores para manejar coincidencias no encontradas o problemas de conexión.
+### 3. Gestión de usuarios y roles
+- Registro de nuevos usuarios
+- Administración de roles
+- Separación de permisos por tipo de usuario
+- Estructura preparada para entornos con distintos niveles de acceso
 
-4. **Agregar un nuevo contenido**
-   - Endpoint para agregar una nueva pelicula o serie a la base de datos.
-   - Validación de campos obligatorios.
+### 4. Documentación de la API
+- Swagger UI disponible en `/api-docs`
+- Endpoints documentados con comentarios JSDoc
+- Facilita la prueba y validación de la API
 
-5. **Actualizar un contenido:**
-   - Endpoint para actualizar información como temporadas o reparto.
-   - Control de errores para manejar actualizaciones fallidas.
-     
-6. **Eliminar un contenido**
-   - Endpoint para eliminar un contenido de la base de datos.
-   - Control de errores para manejar problemas durante el borrado.
-
-7. **Control de errores**
-   - Manejo de errores en la estructura de las solicitudes y respuestas.
-   - Respuesta adecuada con mensajes y códigos de error específicos.
-   - Control de acceso a rutas no existentes con respuestas apropiadas.
-
-## Documentación de la API
-
-### Swagger
-Debes implementar la documentación de tu API utilizando **Swagger** (OpenAPI). Esto permitirá que cualquier desarrollador pueda entender y probar los endpoints de tu aplicación de manera interactiva.
-
-**Requisitos:**
-1. Instalar las dependencias necesarias:
-   ```bash
-   npm install swagger-jsdoc swagger-ui-express
-   ```
-
-2. Configurar Swagger en tu aplicación (`app.js`):
-   - Definir la configuración básica de Swagger (título, versión, descripción, servidor).
-   - Integrar Swagger UI en una ruta específica (ejemplo: `/api-docs`).
-
-3. Documentar cada endpoint con comentarios JSDoc:
-   - Descripción del endpoint.
-   - Parámetros requeridos y opcionales.
-   - Respuestas posibles (códigos de estado y ejemplos).
-   - Modelos de datos (schemas).
-
-4. La documentación debe incluir:
-   - Información general de la API.
-   - Todos los endpoints del CRUD.
-   - Ejemplos de request y response.
-   - Códigos de estado HTTP utilizados.
-
-### Archivo api.http
-Debes crear un archivo **api.http** en la raíz del proyecto que contenga ejemplos de todas las peticiones HTTP que tu API soporta. Este archivo permitirá probar los endpoints de manera rápida usando la extensión REST Client de Visual Studio Code.
-
-**Requisitos:**
-1. Incluir todas las operaciones CRUD:
-   - GET: Obtener todos los contenidos.
-   - GET: Obtener un contenido por ID.
-   - GET: Filtrar contenidos (por título, género, categoría).
-   - POST: Crear un nuevo contenido.
-   - PUT/PATCH: Actualizar un contenido existente.
-   - DELETE: Eliminar un contenido.
-
-2. Cada petición debe incluir:
-   - El método HTTP y la URL completa.
-   - Headers necesarios (Content-Type, etc.).
-   - Body con datos de ejemplo (para POST y PUT).
-   - Comentarios explicativos.
-
-3. Separar las peticiones con `###` para facilitar su ejecución individual.
-
-4. Incluir variables de entorno cuando sea apropiado (ejemplo: `@baseUrl`).
-  
-## Herramientas Sugeridas
-Utiliza una **I.A.** como sugerimos en clase para optimizar la inserción de los datos del JSON a la base de datos. Esto puede ayudarte a transformar el archivo *trailerflix.json* en un formato que sea más fácil de insertar en MySQL.
-
-## Fechas Importantes
-
-- **Avance del Proyecto**: 15 de octubre de 2024
-  - Tener diseñadas las tablas en DB Designer, con el archivo SQL generado y los primeros endpoints funcionando.
-
-- **Presentación Final**: 31 de octubre de 2024
-  - Proyecto completo con CRUD y toda la documentación.
-
-## Estructura del Repositorio
+## Estructura del proyecto
 
 ```plaintext
 /controllers
+  - authController.js
+  - usuarioController.js
+  - rolController.js
   - contenidoController.js
-/json
-  - trailerflix.json
-/README.md
-/app.js
-/api.http
-/conexion/
-  - database.js
-/models/
+/middlewares
+  - authMiddleware.js
+/models
+  - usuario.js
+  - rol.js
   - contenido.js
   - categoria.js
   - genero.js
   - actor.js
-/routes/
+  - refreshToken.js
+  - index.js
+/routes
+  - authRoutes.js
+  - usuarioRoutes.js
+  - rolesRoutes.js
   - contenidoRoutes.js
+/conexion
+  - database.js
+  - sequelize.js
+  - swagger.js
+/utils
+  - logger.js
+/app.js
+/api.http
+/README.md
+/SECURITY.md
 ```
 
-### Descripción de Archivos
+## Instalación
 
-- **/json**: Contiene el archivo trailerflix.json con los datos de películas y series.
-- **/README.md**: Este archivo, con la descripción del proyecto.
-- **/app.js**: Archivo principal de la aplicación Node.js.
-- **/api.http**: Archivo con ejemplos de peticiones HTTP para probar todos los endpoints de la API.
-- **/conexion/database.js**: Configuración de la conexión a MySQL.
-- **/models/**: Modelos de datos para las tablas en MySQL.
-- **/routes/**: Definición de las rutas y endpoints del CRUD.
+1. Cloná el repositorio:
 
-## Instrucciones de Entrega
+```bash
+git clone <url-del-repositorio>
+cd ciberseguridad-backend
+```
 
-1. **Fork** el repositorio desde [aquí](https://github.com/FabioDrizZt/Trabajo-Integrador-Relacional-Backend-Diplomatura-UNTREF/fork).
-2. **Clona** tu fork en tu máquina local.
-   ```bash
-   git clone https://github.com/tu-usuario/tu-repositorio-fork.git
-   ```
-3. Realiza los cambios y sube tu código a tu fork.
-4. **Sube** los cambios a tu fork.
-   ```bash
-   git add .
-   git commit -m "Descripción de los cambios"
-   git push origin main
-   ```
+2. Instalá las dependencias:
 
-5. Agrega a los siguientes usuarios como colaboradores en tu repositorio:
-   - [FabioDrizZt](https://github.com/FabioDrizZt)
-   - [Fer24Sanchez](https://github.com/Fer24Sanchez)
+```bash
+npm install
+```
+
+3. Configurá las variables de entorno en un archivo `.env`:
+
+```env
+PORT=3000
+DB_HOST=localhost
+DB_NAME=ciberseguridad
+DB_USER=root
+DB_PASSWORD=tu_contraseña
+JWT_SECRET=tu_clave_secreta
+JWT_REFRESH_SECRET=tu_refresh_secret
+```
+
+4. Iniciá la aplicación:
+
+```bash
+npm start
+```
+
+Modo desarrollo:
+
+```bash
+npm run dev
+```
+
+## Endpoints principales
+
+### Autenticación
+- `POST /auth/register` - Registro de usuarios
+- `POST /auth/login` - Inicio de sesión
+- `POST /auth/refresh-token` - Renovación de sesión
+- `POST /auth/logout` - Cierre de sesión
+
+### Usuarios y roles
+- `GET /usuarios`
+- `GET /usuarios/:id`
+- `POST /usuarios`
+- `PUT /usuarios/:id`
+- `DELETE /usuarios/:id`
+- `GET /roles`
+
+### Otros módulos
+- `GET /contenido`
+- `POST /contenido`
+- `PUT /contenido/:id`
+- `DELETE /contenido/:id`
+
+## Seguridad implementada
+
+Este proyecto aplica buenas prácticas de ciberseguridad en la capa backend, incluyendo:
+
+- cifrado de contraseñas con `bcrypt`
+- autenticación basada en JWT
+- soporte a tokens de refresco
+- limitación de intentos de acceso
+- uso de `helmet` para reforzar cabeceras HTTP
+- control de acceso por roles
+- registro de eventos con `winston`
+- separación de responsabilidades entre rutas, controladores y middlewares
+
+## Documentación
+
+La API está documentada con Swagger y puede consultarse en:
+
+```text
+http://localhost:3000/api-docs
+```
+
+También se incluye un archivo de ejemplo para pruebas HTTP en `api.http`.
+
+## Seguridad y auditoría
+
+La documentación detallada sobre buenas prácticas, autenticación, manejo de errores y auditoría de seguridad está en [SECURITY.md](SECURITY.md).
 
 ## Conclusión
 
-Este proyecto te permitirá aplicar conceptos clave de desarrollo backend, diseño de bases de datos y documentación. ¡Adelanta los pasos y recuerda mantener tu código limpio y bien documentado!
+Este backend está orientado a la ciberseguridad en el sentido de proteger la aplicación, controlar accesos, autenticar usuarios y reforzar la seguridad de los servicios expuestos. Si bien es una API en Node.js con arquitectura modular, su propósito principal es actuar como base segura para sistemas con requerimientos de identidad, permisos y protección de información.
 
 ---
 
-Recuerda mantener tu código limpio, documentado y seguir las buenas prácticas de desarrollo.
-## Seguridad
-
-La documentación detallada sobre seguridad, autenticación, logs y pruebas se ha movido a un archivo separado: [SECURITY.md](SECURITY.md).
-
-Resumen rápido aquí: autenticación por JWT + refresh tokens, contraseñas hasheadas con bcrypt, validación de entradas, cabeceras de seguridad (`helmet`), limitación de tasa para login y logs de auditoría con `winston`.
-
-Para ver la explicación completa, ejemplos de pruebas y ubicaciones de los archivos relevantes, revisá [SECURITY.md](SECURITY.md).
+El proyecto se mantiene con una estructura limpia, modular y preparada para crecer en funcionalidades de seguridad y administración del sistema.
